@@ -124,7 +124,6 @@ def test_root_route(self):
 ```
 Verify that the root route returns a status code of 200 (which means the request has succeeded) and the expected JSON response.
 
-
 **Addition Route**
 ```python
 def test_addition_route(self):
@@ -134,7 +133,6 @@ def test_addition_route(self):
 ```
 This tests the addition route by checking if the correct result is returned for the provided parameters. <br> The same test is also run for the difference function. 
 
-
 **API Configuration**
 ```python
 def test_api_configuration(self):
@@ -143,6 +141,18 @@ def test_api_configuration(self):
     self.assertEqual(builder.methodsDefault, ["GET"])
 ```
 Check that the API configuration matches the expected values.
+
+** Rate Limit**
+```python
+ def test_rate_limited_route(self):
+        response = self.client.get("/rate")
+        self.assertEqual(response.status_code, 200)
+        response = self.client.get("/rate")
+        self.assertEqual(response.status_code, 200)
+        response = self.client.get("/rate")
+        self.assertEqual(response.status_code, 429)
+```
+This tests whether for the 2 requests per hour limit endpoint, we get the 429 error which means rate limit reached.
 
 
 The final output consists in how many tests have passed/failed, and the execution time for these tests.
